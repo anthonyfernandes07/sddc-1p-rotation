@@ -30,7 +30,7 @@ print(f"Authenticated with SDDC Manager. Token: {auth_token}")
 # Fetch credentials from SDDC Manager
 headers = {"Authorization": f"Bearer {auth_token}"}
 params = {"resourceType": "VRA"}
-creds_response = requests.get(f"{SDDC_URL}/v1/credentials", headers=headers, params=params, verify=False)
+creds_response = requests.get(f"{SDDC_URL}/v1/credentials", headers=headers, params=params, verify="/venv_for_1pcli/venv_for_1pcli/REDACTED_SDDC_HOST.crt")
 credentials = creds_response.json()
 #print(json.dumps(credentials, indent=2))
 

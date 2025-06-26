@@ -1,0 +1,42 @@
+# Connect to vCenter
+Connect-VIServer -Server "REDACTED_VCENTER_HOST"
+
+# Get all clusters or target a specific one
+$clusters = Get-Cluster * # or: Get-Cluster "Legacy-Cluster-Name"
+
+# Get all DRS cluster groups
+Get-DrsClusterGroup -type VMHostGroup | Select Name, Cluster, @{N= 'Member' E = { $_.Member.Name -join '|'} }  
+
+# Result array
+$results = @()
+
+foreach ($cluster in $clusters) {
+    $rules = Get-DrsVMHostRule -Cluster $cluster | Where-Object { $_.Enabled -eq $true }
+
+    foreach ($rule in $rules) {
+        # Get Windows VMs in the rule
+        $windowsVMs = $rule.VMGroup.VM | Where-Object { $_.Guest.OSFullName -like "*Windows*" }
+
+        if ($windowsVMs.Count -gt 0) {
+            # Get actual ESXi hosts from the Host Group
+            $hostNames = $rule.HostGroup.Host | Select-Object -ExpandProperty Name
+
+            # Build a record
+            $results += [PSCustomObject]@{
+                Cluster     = $cluster.Name
+                RuleName    = $rule.Name
+                RuleType    = "VM-Host"
+                Mandatory   = $rule.Mandatory
+                WindowsVMs  = $windowsVMs.Name -join ", "
+                HostGroup   = $rule.HostGroup.Name
+                Hosts       = $hostNames -join ", "
+            }
+        }
+    }
+}
+
+# Display results
+$results | Format-Table -AutoSize
+
+# Optional: export for Snow
+$results | Export-Csv "WindowsVMHostAffinityRules_WithHosts.csv" -NoTypeInformation

@@ -6,7 +6,7 @@ import json
 
 load_dotenv("testcreds.env")
 # Environment variables for security
-SDDC_URL = "https://REDACTED_SDDC_HOST/"
+SDDC_URL = os.getenv("SDDC_URL")
 SDDC_USERNAME = os.getenv("SDDC_USERNAME")
 SDDC_PASSWORD = os.getenv("SDDC_PASSWORD")
 
@@ -15,7 +15,7 @@ if not SDDC_USERNAME or not SDDC_PASSWORD:
     sys.exit(1)  # Exit the script with an error code
 
 OP_API_TOKEN = os.getenv("OP_API_TOKEN")
-VAULT_ID = "REDACTED_VAULT_ID" # Need to set to IaaS vault ID
+VAULT_ID = os.getenv("VAULT_ID") # Need to set to IaaS vault ID
 
 # Authentication with SDDC Manager
 auth_response = requests.post(
@@ -30,7 +30,7 @@ print(f"Authenticated with SDDC Manager. Token: {auth_token}")
 # Fetch credentials from SDDC Manager
 headers = {"Authorization": f"Bearer {auth_token}"}
 params = {"resourceType": "VRA"}
-creds_response = requests.get(f"{SDDC_URL}/v1/credentials", headers=headers, params=params, verify="/venv_for_1pcli/venv_for_1pcli/REDACTED_SDDC_HOST.crt")
+creds_response = requests.get(f"{SDDC_URL}/v1/credentials", headers=headers, params=params, verify="/venv_for_1pcli/venv_for_1pcli/v-vcf.crt")
 credentials = creds_response.json()
 #print(json.dumps(credentials, indent=2))
 

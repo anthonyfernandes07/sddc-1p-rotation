@@ -11,7 +11,8 @@ if not OP_API_TOKEN:
     print("Error: 1Password API token is missing. Set OP_API_TOKEN.")
     sys.exit(1)  # Exit the script with an error code
 
-VAULT_ID = "REDACTED_VAULT_ID"
+VAULT_ID = os.getenv("VAULT_ID")
+
 # 1Password API base URL
 op_headers = {"Authorization": f"Bearer {OP_API_TOKEN}", "Content-Type": "application/json"}
 op_items_url = f"http://localhost:8080/v1/vaults/{VAULT_ID}/items"

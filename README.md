@@ -14,6 +14,9 @@ The solution integrates VMware Cloud Foundation (VCF) SDDC Manager with 1Passwor
 
 To securely access vault data, 1Password Connect was deployed on a Kubernetes cluster, providing a self-hosted API endpoint for secret management. The synchronization service authenticates against both the SDDC Manager API and the 1Password Connect API, compares credential records, and updates vault entries when changes are detected.
 
+<img width="1214" height="1295" alt="sddc man to 1pass" src="https://github.com/user-attachments/assets/17449fa4-5e45-465a-a435-4acd01b0e557" />
+
+
 ### Components
 
 * VMware SDDC Manager API

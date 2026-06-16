@@ -2,6 +2,25 @@
 
 Automates synchronization of VMware Cloud Foundation (VCF) / SDDC Manager credentials into 1Password Connect.
 
+## Problem
+
+VMware Cloud Foundation (VCF) environments contain critical infrastructure credentials used across management and operational services. Maintaining these credentials manually in enterprise password managers can be time-consuming, error-prone, and difficult to audit at scale.
+
+This project automates the synchronisation of credentials between VMware SDDC Manager and 1Password Connect. By integrating directly with both platforms through their APIs, the solution detects credential changes, creates missing entries, and updates existing records automatically, reducing operational overhead while improving security and consistency.
+
+## Architecture
+
+The solution integrates VMware Cloud Foundation (VCF) SDDC Manager with 1Password Connect.
+
+To securely access vault data, 1Password Connect was deployed on a Kubernetes cluster, providing a self-hosted API endpoint for secret management. The synchronization service authenticates against both the SDDC Manager API and the 1Password Connect API, compares credential records, and updates vault entries when changes are detected.
+
+### Components
+
+* VMware SDDC Manager API
+* Python Synchronization Service
+* Kubernetes-hosted 1Password Connect
+* 1Password Vault
+
 ## Features
 
 - Authenticates to SDDC Manager API
